@@ -11,7 +11,6 @@ class InMemoryModelCheckpoint(Callback):
         self.checkpoints.append({
             'epochs': epochs,
             'logs': logs,
-            'config': self.model.get_config(), # Not so needed actually
             'weights': self.model.get_weights(),
             })
 
