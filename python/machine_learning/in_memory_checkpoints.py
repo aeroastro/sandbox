@@ -1,7 +1,7 @@
 from keras.callbacks import Callback
 
 class InMemoryModelCheckpoint(Callback):
-    def __init__(self, *, checkpoints=[], monitor='val_acc', load_best_on_train_end=True):
+    def __init__(self, *, checkpoints=[], monitor='val_acc', load_best_on_train_end=False):
         super(InMemoryModelCheckpoint, self).__init__()
         self.checkpoints = checkpoints
         self.monitor = monitor
