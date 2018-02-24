@@ -10,6 +10,7 @@ verify_ssl = true
 numpy = "*"
 ipython = "*"
 jupyter = "*"
+keras = "*"
 
 
 [dev-packages]
