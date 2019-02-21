@@ -50,7 +50,7 @@ namespace :transfer do # rubocop:disable Metrics/BlockLength
       rescue StandardError => e
         print 'F'
         logger.debug("Error: #{e.class}: #{e.message}")
-        sleep max_sleep / 10.0 # In order to avoid heavy race condition under errors
+        sleep max_sleep / 10.0 # In order to avoid too heavy load under error
         next
       end
     end
