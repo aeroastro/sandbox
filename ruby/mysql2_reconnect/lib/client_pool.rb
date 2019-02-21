@@ -14,7 +14,7 @@ class ClientPool
 
   def with_clients(&block)
     clients = Array.new(block.arity) { self.class.client_class.new(@options) }
-    yield *clients
+    yield(*clients)
   ensure
     clients&.each(&:close)
   end
