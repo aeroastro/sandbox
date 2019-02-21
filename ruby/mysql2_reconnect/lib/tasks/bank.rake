@@ -7,16 +7,16 @@ require 'parallel'
 
 require 'bank'
 
-namespace :transfer do # rubocop:disable Metrics/BlockLength
+namespace :bank do # rubocop:disable Metrics/BlockLength
   desc 'Load MySQL concurrently'
-  task :concurrent, [:concurrency] do |_t, args| # rubocop:disable Metrics/BlockLength
+  task :transfer, [:concurrency] do |_t, args| # rubocop:disable Metrics/BlockLength
     Bank.setup!
 
     process_num = args[:concurrency] ? args[:concurrency].to_i : 10
     max_sleep = 4.0
     queue_buffer_length = process_num * 10
 
-    logger = Logger.new('log/transfer.log')
+    logger = Logger.new('log/bank_transfer.log')
     challenge_queue = Queue.new
     enq_thread = Thread.new do
       begin
@@ -31,12 +31,13 @@ namespace :transfer do # rubocop:disable Metrics/BlockLength
     end
 
     Signal.trap(:SIGINT) do
-      puts 'Received SIGINT, now shutting down......'
+      puts '\nReceived SIGINT, now shutting down......'
       enq_thread.kill
     end
 
-    puts YAML.dump(Bank.fetch_report)
     puts "Concurrency: #{process_num}"
+    puts "Balances before transfers"
+    puts YAML.dump(Bank.fetch_report)
     puts 'Now starting transfers. Ctrl+C to stop.'
 
     Parallel.map(-> { challenge_queue.pop || Parallel::Stop }, in_processes: process_num, interrupt_signal: :TERM) do
@@ -56,6 +57,8 @@ namespace :transfer do # rubocop:disable Metrics/BlockLength
       end
     end
 
+    puts "\nFinished"
+    puts "Balances after transfers"
     puts YAML.dump(Bank.fetch_report)
   end
 end
