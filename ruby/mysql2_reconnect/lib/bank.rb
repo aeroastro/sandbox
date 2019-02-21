@@ -12,15 +12,22 @@ module Bank
 
       # We conduct substraction first to avoid lock
       client1.query 'BEGIN'
-      client1.prepare(<<~SQL).execute(to, transfer, transfer)
-        INSERT INTO `bank_balances` VALUES (?, ?) ON DUPLICATE KEY UPDATE `balance` = `balance` + ?
+      # NOTE: some combination of libmysql and Mysql2 prepare result in SEGV
+      # client1.prepare(<<~SQL).execute(to, transfer, transfer)
+      #   INSERT INTO `bank_balances` VALUES (?, ?) ON DUPLICATE KEY UPDATE `balance` = `balance` + ?
+      # SQL
+      client1.query <<~SQL
+        INSERT INTO `bank_balances` VALUES ('#{client1.escape(to)}', #{transfer.to_i}) ON DUPLICATE KEY UPDATE `balance` = `balance` + #{transfer.to_i}
       SQL
 
       # Do something if required
       yield client1, client2 if block_given?
 
-      client1.prepare(<<~SQL).execute(transfer, from)
-        UPDATE `bank_balances` SET `balance` = `balance` - ? WHERE `name` = ?
+      # client1.prepare(<<~SQL).execute(transfer, from)
+      #   UPDATE `bank_balances` SET `balance` = `balance` - ? WHERE `name` = ?
+      # SQL
+      client1.query <<~SQL
+        UPDATE `bank_balances` SET `balance` = `balance` - #{transfer.to_i} WHERE `name` = '#{client1.escape(from)}'
       SQL
       client1.query 'COMMIT'
     end
