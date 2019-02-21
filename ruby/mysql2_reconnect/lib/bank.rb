@@ -45,7 +45,7 @@ module Bank
   def self.fetch_report
     {
       'details' => fetch_details.map { |record| [record['name'], record['balance']] }.to_h,
-      'total' => fetch_total_balance,
+      'total' => fetch_total_balance
     }
   end
 

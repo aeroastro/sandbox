@@ -3,8 +3,8 @@
 source 'https://rubygems.org'
 
 gem 'mysql2'
-gem 'rake'
 gem 'parallel'
+gem 'rake'
 
 group :development do
   gem 'minitest'
