@@ -8,7 +8,8 @@ https://dev.mysql.com/doc/refman/8.0/en/c-api-auto-reconnect.html
 
 ## Prerequisites
 
-You have Ruby >= 2.3.
+* Ruby >= 2.3
+* MySQL >= 5.6
 
 ## Usage
 
