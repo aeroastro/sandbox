@@ -12,9 +12,9 @@ namespace :bank do # rubocop:disable Metrics/BlockLength
   task :transfer, [:concurrency] do |_t, args| # rubocop:disable Metrics/BlockLength
     Bank.setup!
 
-    process_num = args[:concurrency] ? args[:concurrency].to_i : 10
+    concurrency = args[:concurrency] ? args[:concurrency].to_i : 10
     max_sleep = 4.0
-    queue_buffer_length = process_num * 10
+    queue_buffer_length = concurrency * 10
 
     logger = Logger.new('log/bank_transfer.log')
     challenge_queue = Queue.new
@@ -35,14 +35,14 @@ namespace :bank do # rubocop:disable Metrics/BlockLength
       enq_thread.kill
     end
 
-    puts "Concurrency: #{process_num}"
+    puts "Concurrency: #{concurrency}"
     puts 'Balances before transfers'
     puts YAML.dump(Bank.fetch_report)
     puts 'Now starting transfers. Ctrl+C to stop.'
 
-    Parallel.map(-> { challenge_queue.pop || Parallel::Stop }, in_processes: process_num, interrupt_signal: :TERM) do
+    Parallel.map(-> { challenge_queue.pop || Parallel::Stop }, in_threads: concurrency) do
       begin
-        Signal.trap(:SIGINT, :IGNORE) # ignore signal in child process
+        # Signal.trap(:SIGINT, :IGNORE) # ignore signal in child process (This is what this code was in multi processes)
 
         Bank.transfer_balance(to: "receiver_#{SecureRandom.hex(10)}", client_options: { reconnect: true }) do |_client1, _client2|
           sleep rand * max_sleep
