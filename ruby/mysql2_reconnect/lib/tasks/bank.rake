@@ -36,7 +36,7 @@ namespace :bank do # rubocop:disable Metrics/BlockLength
     end
 
     puts "Concurrency: #{process_num}"
-    puts "Balances before transfers"
+    puts 'Balances before transfers'
     puts YAML.dump(Bank.fetch_report)
     puts 'Now starting transfers. Ctrl+C to stop.'
 
@@ -58,7 +58,7 @@ namespace :bank do # rubocop:disable Metrics/BlockLength
     end
 
     puts "\nFinished"
-    puts "Balances after transfers"
+    puts 'Balances after transfers'
     puts YAML.dump(Bank.fetch_report)
   end
 end
