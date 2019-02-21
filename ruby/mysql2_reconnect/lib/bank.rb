@@ -63,7 +63,7 @@ module Bank
       SQL
       client.query <<~SQL
         CREATE TABLE `bank_balances` (
-          `name` varchar(255) NOT NULL,
+          `name` varchar(100) NOT NULL,
           `balance` bigint(20) unsigned NOT NULL,
           PRIMARY KEY(`name`)
         ) ENGINE=InnoDB
