@@ -101,7 +101,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# lib/ No for ruby
 lib64/
 parts/
 sdist/
