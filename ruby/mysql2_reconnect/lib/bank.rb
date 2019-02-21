@@ -57,6 +57,7 @@ module Bank
   end
 
   def self.setup!
+    ClientPool.setup!
     ClientPool.new.with_clients do |client|
       client.query <<~SQL
         DROP TABLE IF EXISTS `bank_balances`

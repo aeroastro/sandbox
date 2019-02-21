@@ -10,8 +10,21 @@ class ClientPool
     Mysql2::Client
   end
 
+  def self.setup!
+    reload_default_options!
+  end
+
+  def self.reload_default_options!
+    @default_options = nil
+    default_options
+  end
+
+  def self.default_options
+    @default_options ||= YAML.safe_load(File.read(YAML_PATH))
+  end
+
   def initialize(options = {})
-    @options = YAML.safe_load(File.read(YAML_PATH)).tap do |opt|
+    @options = self.class.default_options.dup.tap do |opt|
       options.each { |k, v| opt[k.to_s] = v }
     end
   end
