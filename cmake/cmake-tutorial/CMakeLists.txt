@@ -1,5 +1,16 @@
 cmake_minimum_required(VERSION 3.20)
+project(Tutorial VERSION 0.1)
 
-project(Tutorial)
+# For debugging
+include(CMakePrintHelpers)
 
-add_executable(console src/console.cpp)
+# CMake-generated file
+configure_file(config.h.in config.h)
+
+# building target console
+add_executable(console console.cpp)
+target_include_directories(console PUBLIC
+                           "${PROJECT_BINARY_DIR}"
+                           )
+
+cmake_print_variables(PROJECT_BINARY_DIR PROJECT_SOURCE_DIR)
