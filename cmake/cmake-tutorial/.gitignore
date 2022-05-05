@@ -54,3 +54,7 @@ _deps
 *-prefix/
 
 # End of https://www.toptal.com/developers/gitignore/api/cmake,c++
+
+
+# Build directory for a user
+build
