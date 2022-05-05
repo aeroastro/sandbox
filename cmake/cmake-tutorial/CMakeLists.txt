@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 include(CMakePrintHelpers)
 
 # CMake-generated file
-configure_file(config.h.in config.h)
+configure_file(config.in.hpp config.hpp)
 
 # building target console
 add_executable(console console.cpp)

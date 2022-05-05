@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "config.h"
+#include "config.hpp"
 
 int main() {
     std::cout << "Console Apps" << std::endl;
