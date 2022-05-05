@@ -3,6 +3,8 @@
 #include "config.h"
 
 int main() {
+    std::cout << "Console Apps" << std::endl;
+    std::cout << "Version: " << Tutorial_VERSION_MAJOR << "." << Tutorial_VERSION_MINOR << std::endl;
     std::cout << "Input anything." << std::endl;
 
     std::string input_line;
